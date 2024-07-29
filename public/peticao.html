@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petição</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <a href="index.html">Cálculo de RMC</a>
+        <a href="peticao.html">Petição</a>
+    </div>
+    <div class="container">
+        <h1>Cadastro de Petição</h1>
+        <form id="petitionForm">
+            <label for="vara">Número da Vara das Relações de Consumo:</label>
+            <input type="number" id="vara" name="vara" required />
+
+            <label for="contrato">Número do Contrato:</label>
+            <input type="number" id="contrato" name="contrato" required />
+
+            <label for="valorParcela">Valor da Parcela Mensal:</label>
+            <input type="text" id="valorParcela" name="valorParcela" required readonly />
+
+            <label for="dataInicio">Data de Início de Pagamento:</label>
+            <input type="date" id="dataInicio" name="dataInicio" required />
+
+            <label for="nacionalidade">Nacionalidade:</label>
+            <input type="text" id="nacionalidade" name="nacionalidade" required />
+
+            <label for="cpf">CPF:</label>
+            <input type="number" id="cpf" name="cpf" required />
+
+            <button type="submit">Enviar Petição</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="peticao.js"></script>
+</body>
+</html>
