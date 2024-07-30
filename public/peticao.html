@@ -13,7 +13,7 @@
     </div>
     <div class="container">
         <h1>Cadastro de Petição</h1>
-        <form id="petitionForm">
+        <form id="petitionForm" action="/enviar-peticao" method="POST">
             <label for="vara">Número da Vara das Relações de Consumo:</label>
             <input type="number" id="vara" name="vara" required />
 
@@ -26,8 +26,15 @@
             <label for="dataInicio">Data de Início de Pagamento:</label>
             <input type="date" id="dataInicio" name="dataInicio" required />
 
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo" required>
+                <option value="">Selecione</option>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+            </select>
+
             <label for="nacionalidade">Nacionalidade:</label>
-            <input type="text" id="nacionalidade" name="nacionalidade" required />
+            <input type="text" id="nacionalidade" name="nacionalidade" required readonly />
 
             <label for="cpf">CPF:</label>
             <input type="number" id="cpf" name="cpf" required />
