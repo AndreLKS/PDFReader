@@ -1,92 +1,88 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const valorParcelaInput = document.getElementById('valorParcela');
+document.addEventListener('DOMContentLoaded', async () => {
+    const estadoSelect = document.getElementById('estado');
+    const cidadeSelect = document.getElementById('cidade');
 
-    // Obtendo o valor da parcela mensal armazenado
-    const valorParcela = localStorage.getItem('valorParcela');
-    
-    if (valorParcela) {
-        valorParcelaInput.value = valorParcela;
-    }
-});
-document.addEventListener('DOMContentLoaded', function () {
-    const sexoSelect = document.getElementById('sexo');
-    const nacionalidadeInput = document.getElementById('nacionalidade');
+    // Função para buscar estados
+    async function loadEstados() {
+        try {
+            const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+            const estados = await response.json();
 
-    sexoSelect.addEventListener('change', function () {
-        if (sexoSelect.value === 'masculino') {
-            nacionalidadeInput.value = 'Brasileiro';
-        } else if (sexoSelect.value === 'feminino') {
-            nacionalidadeInput.value = 'Brasileira';
-        } else {
-            nacionalidadeInput.value = '';
+            // Ordenar estados alfabeticamente
+            estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Limpar as opções existentes
+            estadoSelect.innerHTML = '<option value="" disabled selected>Selecione um estado</option>';
+
+            // Adicionar as opções de estados
+            estados.forEach(estado => {
+                const option = document.createElement('option');
+                option.value = estado.sigla;
+                option.textContent = estado.nome;
+                estadoSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao buscar estados:', error);
         }
-    });
-});
-document.addEventListener('DOMContentLoaded', () => {
-    const valorParcelaInput = document.getElementById('valorParcela');
-    const sexoSelect = document.getElementById('sexo');
-    const nacionalidadeInput = document.getElementById('nacionalidade');
-    const numeroVaraInput = document.getElementById('vara');
-    const numeroContratoInput = document.getElementById('contrato');
-    const dataInicioInput = document.getElementById('dataInicio');
-    const nomeInput = document.getElementById('nome');
-    const cpfInput = document.getElementById('cpf');
-    const valorCausaInput = document.getElementById('valorCausa');
-    const beneficioInput = document.getElementById('beneficio');
-    const dataNascimentoInput = document.getElementById('dataNascimento');
-    const submitButton = document.getElementById('submitBtn');
-
-    const valorParcela = localStorage.getItem('valorParcela');
-    if (valorParcela) {
-        valorParcelaInput.value = valorParcela;
     }
 
-    sexoSelect.addEventListener('change', () => {
-        if (sexoSelect.value === 'masculino') {
-            nacionalidadeInput.value = 'Brasileiro';
-        } else if (sexoSelect.value === 'feminino') {
-            nacionalidadeInput.value = 'Brasileira';
-        } else {
-            nacionalidadeInput.value = '';
+    // Função para buscar cidades
+    async function loadCidades(estado) {
+        try {
+            const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`);
+            const cidades = await response.json();
+
+            // Ordenar cidades alfabeticamente
+            cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Limpar as opções existentes
+            cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione uma cidade</option>';
+
+            // Adicionar as opções de cidades
+            cidades.forEach(cidade => {
+                const option = document.createElement('option');
+                option.value = cidade.id;
+                option.textContent = cidade.nome;
+                cidadeSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao buscar cidades:', error);
+        }
+    }
+
+    // Carregar estados ao iniciar a página
+    await loadEstados();
+
+    // Adicionar evento para carregar cidades quando o estado mudar
+    estadoSelect.addEventListener('change', () => {
+        const estado = estadoSelect.value;
+        if (estado) {
+            loadCidades(estado);
         }
     });
 
-    submitButton.addEventListener('click', async (event) => {
+    // Manipulador do envio do formulário
+    document.getElementById('cadastroForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        const substitutions = {
-            '[SUBSTITUIÇÃO1]': numeroContratoInput.value,
-            'SUBSTITUIÇÃO2': `R$ ${valorParcelaInput.value}`,
-            'SUBSTITUIÇÃO3': dataInicioInput.value,
-            'SUBSTITUIÇÃO4': nomeInput.value,
-            'SUBSTITUIÇÃO5': cpfInput.value,
-            'SUBSTITUIÇÃO6': valorCausaInput.value,
-            'SUBSTITUIÇÃO7': beneficioInput.value,
-            'SUBSTITUIÇÃO8': nacionalidadeInput.value,
-            'SUBSTITUIÇÃO9': dataNascimentoInput.value,
-            'SUBSTITUIÇÃO10': numeroVaraInput.value,
-        };
+        const formData = new FormData(this);
 
-        const response = await fetch('/generate-doc', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(substitutions)
-        });
-
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+        try {
+            const response = await fetch('/replace', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(result);
             const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'peticao_atualizada.docx';
+            a.href = downloadUrl;
+            a.download = 'updated_peticao.docx';
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
-        } else {
-            console.error('Error generating document');
+            a.remove();
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerText = 'Erro ao processar o arquivo.';
         }
     });
 });

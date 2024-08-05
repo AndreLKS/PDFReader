@@ -11,6 +11,7 @@
     flex-direction: column;
     padding-top: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
 }
 
 .sidebar a {
@@ -31,21 +32,30 @@ body {
     display: flex;
     height: 100vh;
     margin: 0;
+    background-color: #f0f2f5; /* Tom cinza muito claro para um fundo mais suave */
 }
 
 .container {
     margin-left: 220px; /* Espaço para o menu lateral */
     padding: 30px;
     width: calc(100% - 220px);
+    text-align: center;
+    background-color: #ffffff; /* Fundo branco ainda mantém um aspecto limpo */
+    border-radius: 8px; /* Borda suavizada para um toque mais refinado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais acentuada para profundidade */
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto; /* Garante que o conteúdo não saia do container em telas menores */
 }
 
-h1 {
-    color: #1a1a1a;
-    font-size: 2em;
-    margin-bottom: 20px;
-    font-weight: 700;
+/* Ajuste para o conteúdo dentro do container */
+.container-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
+/* Estilos gerais para o formulário e seus elementos */
 form {
     display: flex;
     flex-direction: column;
@@ -59,7 +69,7 @@ label {
     text-align: left;
 }
 
-input[type="text"], input[type="date"] {
+input[type="text"], input[type="date"], input[type="file"], select {
     padding: 12px;
     border: 1px solid #cccccc; /* Borda mais suave */
     border-radius: 4px;
@@ -69,7 +79,7 @@ input[type="text"], input[type="date"] {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="text"]:focus, input[type="date"]:focus {
+input[type="text"]:focus, input[type="date"]:focus, select:focus {
     border-color: #003d66; /* Azul profundo para foco */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada no foco */
     outline: none;
@@ -97,67 +107,6 @@ button:hover {
     font-weight: 600;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #e0e0e0; /* Tom cinza claro para um fundo mais suave */
-}
-
-.container {
-    text-align: center;
-    background-color: #ffffff; /* Fundo branco ainda mantém um aspecto limpo */
-    padding: 30px;
-    border-radius: 8px; /* Borda suavizada para um toque mais refinado */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais acentuada para profundidade */
-    max-width: 500px;
-    width: 100%;
-}
-
-h1 {
-    color: #1a1a1a; /* Cor de texto escura e suave para maior sofisticação */
-    font-size: 2em;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Espaçamento maior entre os itens para uma aparência mais arejada */
-}
-
-input[type="file"] {
-    padding: 12px;
-    border: 1px solid #999999; /* Borda cinza escuro para um visual mais sofisticado */
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-button {
-    background-color: #003d66; /* Azul profundo para um visual mais formal */
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-button:hover {
-    background-color: #00274d; /* Azul ainda mais escuro para o efeito hover */
-}
-
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #1a1a1a; /* Cor de texto consistente e formal */
-    font-weight: 600;
-}
-
 /* Estilos para o balão de notificação */
 .notification {
     position: fixed;
@@ -170,4 +119,54 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     z-index: 1000;
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+    }
+
+    .container {
+        margin-left: 170px;
+        width: calc(100% - 170px);
+        padding: 20px;
+    }
+
+    .sidebar a {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100px;
+        font-size: 12px;
+    }
+
+    .container {
+        margin-left: 120px;
+        width: calc(100% - 120px);
+        padding: 15px;
+    }
+
+    .sidebar a {
+        font-size: 10px;
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label, input[type="text"], input[type="date"], input[type="file"], button, select {
+        font-size: 14px;
+        padding: 8px;
+    }
 }

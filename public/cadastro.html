@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="calculo.html">Cálculo</a>
+        <a href="cadastro.html">Cadastro</a>
+    </div>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <form id="cadastroForm">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required><br><br>
+            <label for="sobrenome">Sobrenome:</label>
+            <input type="text" id="sobrenome" name="sobrenome" required><br><br>
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado" required>
+                <option value="" disabled selected>Selecione um estado</option>
+            </select><br><br>
+            <label for="cidade">Cidade:</label>
+            <select id="cidade" name="cidade" required>
+                <option value="" disabled selected>Selecione uma cidade</option>
+            </select><br><br>
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" required><br><br>
+            <label for="numeroContrato">Número do Contrato:</label>
+            <input type="text" id="numeroContrato" name="numeroContrato" required><br><br>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="peticao.js"></script>
+</body>
+</html>

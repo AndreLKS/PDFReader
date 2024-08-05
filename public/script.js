@@ -11,32 +11,5 @@ document.getElementById('uploadForm').addEventListener('submit', async (event) =
     });
 
     const result = await response.json();
-    localStorage.setItem('valorParcela', result.total);
-
-    // Redireciona para a página de petição
-    window.location.href = 'peticao.html';
+    document.getElementById('result').innerText = `A soma total dos valores é: R$ ${result.total}`;
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const valorParcelaInput = document.getElementById('valorParcela');
-
-    // Obtendo o valor da parcela mensal armazenado
-    const valorParcela = localStorage.getItem('valorParcela');
-    
-    if (valorParcela) {
-        valorParcelaInput.value = valorParcela;
-
-        // Criando e exibindo o balão de notificação
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = `A soma total dos valores é: R$ ${valorParcela}`;
-        document.body.appendChild(notification);
-
-        // Remover o balão de notificação após alguns segundos
-        setTimeout(() => {
-            document.body.removeChild(notification);
-            localStorage.removeItem('valorParcela');
-        }, 5000);
-    }
-});
-
